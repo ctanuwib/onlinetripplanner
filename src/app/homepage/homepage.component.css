@@ -1,0 +1,10 @@
+.jumbotron {
+  background-image: url('../img/vacation.jpg');
+  background-size: cover;
+}
+
+.wide {
+  width: 100%;
+}
+
+

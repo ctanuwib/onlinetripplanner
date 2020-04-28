@@ -1,0 +1,25 @@
+<nav class="navbar navbar-light bg-light" color="">
+  <a class="navbar-brand" routerLink = ''>Online Trip Planner</a>
+
+    <ul class="navbar-nav navbar-toggleable-sm mr-auto">
+      <li class="nav-item px-2" >
+        <a class="nav-link" routerLink='/search'>Search</a>
+      </li>
+      <li class="nav-item px-2">
+        <a class="nav-link" routerLink='/calendar'>Calendar</a>
+      </li>
+      <li class="nav-item px-2">
+        <a class="nav-link" routerLink='/list'>List</a>
+      </li>
+    </ul>
+    <div class="" *ngIf="!isAuthenticated">
+      <button mat-raised-button class="mx-2" [routerLink]="['/login']" >Log In</button>
+      <button mat-raised-button class="mx-2" [routerLink]="['/register']">Register</button>
+    </div>
+    <div class="" *ngIf="isAuthenticated">
+      <button mat-raised-button class="mx-2" [routerLink]="['/account']">My Account</button>
+      <button mat-raised-button class="mx-2" (click) = "logout()">Log out</button>
+    </div>
+
+
+</nav>

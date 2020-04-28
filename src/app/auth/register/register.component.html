@@ -1,0 +1,20 @@
+<mat-card>
+  <mat-card-title>Register a new account</mat-card-title>
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <form *ngIf="!isLoading" (submit) = "onRegister(registerForm)" #registerForm="ngForm">
+    <mat-form-field>
+      <input matInput ngModel name="name" type="text" placeholder="Name" #nameInput = "ngModel" required>
+      <mat-error *ngIf="nameInput.invalid">Please enter a name!</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput ngModel name="email" type="email" placeholder="E-mail" #emailInput = "ngModel" required email>
+      <mat-error *ngIf="emailInput.invalid">Please enter a valid email!</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput ngModel name="password" type="password" placeholder="Password" minlength="6" #passwordInput = "ngModel" required>
+      <mat-error *ngIf="passwordInput.invalid">Password must be at least 6 characters!</mat-error>
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit" *ngIf = "!isLoading">Register</button>
+    <mat-spinner *ngIf ="isLoading"></mat-spinner>
+  </form>
+</mat-card>

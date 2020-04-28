@@ -1,0 +1,20 @@
+<mat-card>
+  <mat-card-title>Change Your Account Information</mat-card-title>
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <form *ngIf="!isLoading" (submit) = "onUpdate(updateForm)" #updateForm="ngForm">
+    <mat-form-field>
+      <input matInput ngModel name="name" [(ngModel)] = name type="email" placeholder="Name" #usernameInput = "ngModel" required>
+      <mat-error *ngIf="emailInput.invalid">Please enter a name!</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput ngModel name="email" [(ngModel)] = email type="email" placeholder="E-mail" #emailInput = "ngModel" required email>
+      <mat-error *ngIf="emailInput.invalid">Please enter a valid email!</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput ngModel name="password" [(ngModel)] = password type="password" placeholder="Password" minlength="6" #passwordInput = "ngModel"required>
+      <mat-error *ngIf="passwordInput.invalid">Please enter at least 6 characters!</mat-error>
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit" *ngIf = "!isLoading">Update</button>
+    <mat-spinner *ngIf = "isLoading"></mat-spinner>
+  </form>
+</mat-card>

@@ -1,0 +1,150 @@
+<mat-spinner *ngIf = "isLoading"></mat-spinner>
+<div class="row" *ngIf = "!isLoading">
+  <div class="col-5 scrollable" [ngSwitch]="view" >
+    <div *ngSwitchCase="'search'">
+      <form>
+        <SelectCountryComponent
+          (setCountry)="getCountry($event)"
+        ></SelectCountryComponent>
+
+        <br />
+        <p class="mt">Selected Country: {{ selectedCountry.name }}</p>
+        <br />
+        <p class="mt">Country code: {{ selectedCountry.code }}</p>
+
+        <br />
+
+        <GoogleMapsComponent
+          (setAddress)="getAddress($event)"
+          adressType="establishment"
+          country="{{ selectedCountry.code }}"
+        ></GoogleMapsComponent>
+
+        <br />
+      </form>
+      <div [hidden]="place?.name.length < 1">
+        <p class="mt">Name: {{ place?.name }}</p>
+        <ngb-rating readonly="true" max="5" [rate]="place?.rating"></ngb-rating>
+        <p>
+          <small>based on {{ place?.user_ratings_total }} reviews</small>
+        </p>
+        <p class="mt" >Address: {{ place?.formatted_address }}</p>
+        <mat-accordion multi="true" class="my-2">
+          <mat-expansion-panel *ngIf="place?.photos">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Photos
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <ngb-carousel
+              [showNavigationArrows]="true"
+              [showNavigationIndicators]="true"
+            >
+              <ng-template ngbSlide *ngFor="let photo of place?.photos">
+                <div class="picsum-img-wrapper">
+                  <img [src]="photo?.getUrl()" alt="Carousel slide" />
+                </div>
+              </ng-template>
+            </ngb-carousel>
+          </mat-expansion-panel>
+
+          <mat-expansion-panel *ngIf="place?.reviews" class="my-2">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Reviews
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div *ngFor="let review of place?.reviews">
+              <p>
+                Posted by {{ review.author_name }}
+                {{ review.relative_time_description }}
+              </p>
+              <br />
+              <ngb-rating
+                readonly="true"
+                max="5"
+                [rate]="review.rating"
+              ></ngb-rating>
+              <br />
+              <p>{{ review.text }}</p>
+              <hr />
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+
+        <button mat-raised-button (click) = "changeView('addEvent')">Add to Schedule</button>
+      </div>
+    </div>
+    <div *ngSwitchCase="'addEvent'">
+      <mat-form-field>
+        <mat-label>Title</mat-label>
+        <input type="text" matInput [(ngModel)] = title>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Address</mat-label>
+        <input type="text" matInput [(ngModel)] = address>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Start Date</mat-label>
+        <input
+          matInput
+        type = "text"
+        [(ngModel)] = startDate
+        mwlFlatpickr
+        [enableTime]="true"
+        [altInput]= "true"
+        dateFormat="Y-m-dTH:i"
+        altFormat="F j, Y H:i"
+        [convertModelValue]="true"
+        >
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>End Date</mat-label>
+        <input
+          matInput
+        type = "text"
+        [(ngModel)] = endDate
+        mwlFlatpickr
+        [enableTime]="true"
+        [altInput]= "true"
+        dateFormat="Y-m-dTH:i"
+        altFormat="F j, Y H:i"
+        [minDate] = startDate
+        [convertModelValue]="true"
+        >
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Enter Details</mat-label>
+        <textarea matInput [(ngModel)] = details placeholder="I will do..."></textarea>
+      </mat-form-field>
+
+      <div class="row">
+        <div class="col-4">
+          <button (click) = "changeView('search')" mat-raised-button>Return</button>
+        </div>
+        <div class="col-4">
+
+        </div>
+        <div class="col-4">
+          <button *ngIf = "!isLoading" (click) = "addCustomerEvent()" mat-raised-button>Add Event</button>
+        </div>
+
+      </div>
+
+
+    </div>
+  </div>
+  <div class="col-7">
+    <google-map
+      min-height="600px"
+      width="100%"
+      [zoom]="zoom"
+      [center]="place?.geometry.location"
+    >
+      <map-marker [position]="place?.geometry.location"> </map-marker>
+    </google-map>
+  </div>
+</div>
